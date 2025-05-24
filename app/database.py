@@ -3,7 +3,6 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
 # В реальном проекте строку подключения (DATABASE_URL) берём из config.py или переменных окружения.
-# Пример для SQLite (для упрощения):
 DATABASE_URL = "sqlite:///./app_db.sqlite3"
 
 # Создаём движок:

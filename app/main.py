@@ -38,7 +38,7 @@ def create_app() -> FastAPI:
 def init_admin(db: Session):
     """
     Создаёт пользователя с username="admin", ролью="ADMIN", если такого нет.
-    Пароль по умолчанию "admin123" (для учебных целей).
+    Пароль по умолчанию "admin123"
     """
     admin_user = db.query(User).filter(User.username == "admin").first()
     if not admin_user:
