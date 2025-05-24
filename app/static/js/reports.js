@@ -50,7 +50,7 @@ async function getPaymentsByDateRange() {
     const startDateObj = new Date(now.getTime() - 30 * 24*3600*1000);
     const startDate = startDateObj.toISOString().slice(0, 10);
   
-    const url = `/reports/payments?start_date=${startDate}&end_date=${endDate}`;
+    const url = `/reports/payments-range?start_date=${startDate}&end_date=${endDate}`;
     const resp = await fetch(url, { headers: { "Authorization": `Bearer ${token}` }});
     if (resp.ok) {
       const data = await resp.json();
@@ -98,6 +98,55 @@ async function getPaymentsByDateRange() {
     c.appendChild(table);
   }
   
+  function renderPayments(payments, containerId) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = "";
+
+    if (!payments.length) {
+      container.textContent = "Нет платежей.";
+      return;
+    }
+
+    const table = document.createElement("table");
+    table.className = "table table-sm table-bordered";
+    let thead = document.createElement("thead");
+    thead.innerHTML = `
+      <tr>
+        <th>ID</th><th>ID Контракта</th><th>Сумма</th><th>Дата</th><th>Способ</th><th>Статус</th><th></th><th></th>
+      </tr>`;
+    table.appendChild(thead);
+
+    let tbody = document.createElement("tbody");
+    payments.forEach(p => {
+      const tr = document.createElement("tr");
+
+      // Кнопка квитанции
+      const receiptButton = `<button class="btn btn-sm btn-outline-info" onclick="getReceipt(${p.id})">Квитанция</button>`;
+
+      // Кнопка смены статуса
+      let changeStatusButton = "";
+      if (p.status === "unpaid") {
+        changeStatusButton = `<button class="btn btn-sm btn-warning" onclick="markPaymentPaid(${p.id})">Оплатить</button>`;
+      } else if (p.status === "paid") {
+        changeStatusButton = `<button class="btn btn-sm btn-secondary" onclick="markPaymentUnpaid(${p.id})">Отменить оплату</button>`;
+      }
+
+      tr.innerHTML = `
+        <td>${p.id}</td>
+        <td>${p.contract_id}</td>
+        <td>${p.amount}</td>
+        <td>${p.payment_date}</td>
+        <td>${p.payment_method || ""}</td>
+        <td>${p.status || ""}</td>
+        <td>${receiptButton}</td>
+        <td>${changeStatusButton}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+    table.appendChild(tbody);
+    container.appendChild(table);
+  }
+
   async function getSummary() {
     const resp = await fetch("/reports/summary", {
       headers: {"Authorization": `Bearer ${token}`}
