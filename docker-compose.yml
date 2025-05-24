@@ -1,0 +1,30 @@
+version: "3.9"
+
+services:
+  api:
+    build: .
+    container_name: payments_api
+    # Горячий перезапуск кода в dev-режиме
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/code            # Подключаем исходники для live-reload
+    env_file:
+      - .env               # переменные окружения (DB_URL и пр.)
+  #   depends_on:
+  #     - db                 # убери, если используешь SQLite
+
+  # db:
+  #   image: postgres:16-alpine
+  #   container_name: payments_db
+  #   restart: unless-stopped
+  #   environment:
+  #     POSTGRES_USER: postgres
+  #     POSTGRES_PASSWORD: postgres
+  #     POSTGRES_DB: payments
+  #   volumes:
+  #     - pg_data:/var/lib/postgresql/data
+
+# volumes:
+#   pg_data:
