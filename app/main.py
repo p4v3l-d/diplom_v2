@@ -18,7 +18,6 @@ def create_app() -> FastAPI:
         description="API для автоматизации учёта оплаты обучения"
     )
 
-    # Создаём таблицы (в реальном проекте обычго используют Alembic для миграций)
     Base.metadata.create_all(bind=engine)
 
     with SessionLocal() as db:
@@ -31,8 +30,8 @@ def create_app() -> FastAPI:
     app.include_router(payment.router)
     app.include_router(reports.router)
 
-    # app.mount("", StaticFiles(directory="app/static", html=True), name="static-root")
-    app.mount('/static', StaticFiles(directory='app/static'), name='static')
+    app.mount("", StaticFiles(directory="app/static", html=True), name="static-root")
+    # app.mount('/static', StaticFiles(directory='app/static'), name='static')
     
     return app
 
