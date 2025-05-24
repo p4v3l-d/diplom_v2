@@ -1,0 +1,46 @@
+.error { 
+    color: red; 
+  }
+  
+  .hidden { 
+    display: none; 
+  }
+  
+  .card { 
+    margin-bottom: 1rem; 
+  }
+  
+  .pagination-buttons {
+    margin-top: 0.5rem;
+  }
+  
+  /* Дополнительные стили для улучшения внешнего вида */
+  .table th {
+    background-color: #f8f9fa;
+  }
+  
+  .btn-group .btn {
+    margin-right: 2px;
+  }
+  
+  .alert {
+    margin-top: 10px;
+  }
+  
+  /* Стили для аккордеона */
+  .accordion-button:not(.collapsed) {
+    background-color: #e7f3ff;
+    color: #0c63e4;
+  }
+  
+  /* Адаптивность таблиц */
+  @media (max-width: 768px) {
+    .table-responsive {
+      font-size: 0.875rem;
+    }
+    
+    .btn-sm {
+      font-size: 0.75rem;
+      padding: 0.25rem 0.5rem;
+    }
+  }
