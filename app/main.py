@@ -8,6 +8,7 @@ from .database import engine, Base, SessionLocal
 from .routers import student, contract, payment, auth, reports
 from .models.user import User
 from fastapi.staticfiles import StaticFiles
+from .test_data import seed_test_data
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -22,6 +23,7 @@ def create_app() -> FastAPI:
 
     with SessionLocal() as db:
         init_admin(db)
+        seed_test_data()
 
     # Подключаем роутеры
     app.include_router(auth.router)
@@ -31,7 +33,6 @@ def create_app() -> FastAPI:
     app.include_router(reports.router)
 
     app.mount("", StaticFiles(directory="app/static", html=True), name="static-root")
-    # app.mount('/static', StaticFiles(directory='app/static'), name='static')
     
     return app
 
